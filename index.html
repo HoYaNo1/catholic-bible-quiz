@@ -115,10 +115,10 @@
       <aside class="side">
         <h2>오늘의 퀴즈</h2>
         <p>문제를 읽고 가장 알맞은 답을 골라보세요. 각 문항 뒤에 관련 성경 장절을 확인할 수 있습니다.</p>
-        <div class="stat"><span class="stat-label">진행</span><strong class="stat-value" id="side-progress">1 / 20</strong></div>
+        <div class="stat"><span class="stat-label">진행</span><strong class="stat-value" id="side-progress">1 / 10</strong></div>
         <div class="stat"><span class="stat-label">점수</span><strong class="stat-value" id="side-score">0</strong></div>
         <div class="stat"><span class="stat-label">정답률</span><strong class="stat-value" id="side-rate">-</strong></div>
-        <small>문항은 성경 본문을 요약해 구성했으며, 정답 해설에 관련 장절을 표시합니다. 문제 은행 2,000문항 중 매 회차 20문제가 출제됩니다.</small>
+        <small>문항은 성경 본문을 요약해 구성했으며, 정답 해설에 관련 장절을 표시합니다. 문제 은행 2,000문항 중 매 회차 10문제가 출제됩니다.</small>
       </aside>
 
       <section>
@@ -136,7 +136,7 @@
         <div class="result-card" id="result-card">
           <div class="result-mark">✦</div>
           <h2>퀴즈를 마쳤습니다</h2>
-          <div class="result-score" id="final-score">0 / 20</div>
+          <div class="result-score" id="final-score">0 / 10</div>
           <p id="final-message"></p>
           <button class="restart" id="restart" type="button">다시 풀기</button>
         </div>
@@ -332,7 +332,25 @@
       { reference: '이사야서 9장', question: '이사야서 9장은 어둠 속을 걷던 백성에게 무엇이 비친다고 선포하나요?', options: ['큰 빛', '왕의 깃발', '불타는 성벽', '새로운 금화'], answer: 0, explanation: '이사야서 9장은 어둠 속을 걷던 백성이 큰 빛을 보았다고 선포합니다.' },
       { reference: '이사야서 40장', question: '이사야서 40장은 주님을 기다리는 이들이 무엇을 얻는다고 말하나요?', options: ['새 힘', '많은 금', '왕의 자리', '전쟁의 말'], answer: 0, explanation: '이사야서 40장은 주님께 희망을 두는 이들이 새 힘을 얻고 독수리처럼 날아오른다고 전합니다.' },
       { reference: '이사야서 55장', question: '이사야서 55장은 목마른 이에게 무엇을 권하나요?', options: ['물로 나아오라', '왕궁으로 들어가라', '전쟁을 준비하라', '재산을 숨겨라'], answer: 0, explanation: '이사야서 55장은 목마른 이들이 물로 나아오고 돈 없이 와서 먹고 마시라고 초대합니다.' },
-      { reference: '예레미야서 18장', question: '예레미야서 18장에서 하느님은 당신과 백성의 관계를 무엇에 비유하나요?', options: ['옹기장이와 진흙', '목자와 양', '농부와 씨앗', '왕과 군대'], answer: 0, explanation: '예레미야서 18장은 옹기장이가 진흙을 빚듯 하느님께서 민족과 백성을 다루시는 주권을 보여 줍니다.' }
+      { reference: '예레미야서 18장', question: '예레미야서 18장에서 하느님은 당신과 백성의 관계를 무엇에 비유하나요?', options: ['옹기장이와 진흙', '목자와 양', '농부와 씨앗', '왕과 군대'], answer: 0, explanation: '예레미야서 18장은 옹기장이가 진흙을 빚듯 하느님께서 민족과 백성을 다루시는 주권을 보여 줍니다.' },
+      { reference: '루카 복음서 1장 46절', question: '마리아가 하느님을 찬미하며 부른 노래는 무엇으로 알려져 있나요?', options: ['마니피캇', '베네딕투스', '테 데움', '글로리아'], answer: 0, explanation: '마리아의 찬미 노래는 첫 라틴어 낱말에 따라 마니피캇으로 알려져 있습니다.' },
+      { reference: '루카 복음서 2장', question: '예수님의 탄생을 처음 알린 천사의 소식을 들은 사람들은 누구였나요?', options: ['들에서 양을 지키던 목자들', '예루살렘의 상인들', '로마 군인들', '성전의 건축가들'], answer: 0, explanation: '천사는 밤에 양 떼를 지키던 목자들에게 구세주의 탄생을 알렸습니다.' },
+      { reference: '루카 복음서 5장', question: '예수님께서 베드로를 부르실 때 베드로는 어떤 직업을 가진 사람이었나요?', options: ['어부', '세리', '목수', '율법 교사'], answer: 0, explanation: '베드로는 어부였으며, 예수님께서는 그를 사람을 낚는 어부가 되도록 부르셨습니다.' },
+      { reference: '루카 복음서 7장', question: '예수님께서 나인의 과부에게 베푸신 기적은 무엇인가요?', options: ['죽은 외아들을 다시 살리셨다', '집을 새로 지으셨다', '빚을 없애 주셨다', '병사들을 물리치셨다'], answer: 0, explanation: '예수님께서는 나인 성문에서 과부의 외아들을 불쌍히 여기시고 다시 살리셨습니다.' },
+      { reference: '루카 복음서 8장', question: '예수님께서 씨 뿌리는 사람의 비유에서 좋은 땅은 어떤 사람을 가리키나요?', options: ['말씀을 듣고 간직하여 인내로 열매 맺는 사람', '말씀을 곧 잊는 사람', '말씀을 듣고 걱정만 하는 사람', '말씀을 거부하는 사람'], answer: 0, explanation: '좋은 땅은 말씀을 듣고 착하고 좋은 마음으로 간직하여 인내로 열매를 맺는 사람을 가리킵니다.' },
+      { reference: '루카 복음서 11장', question: '예수님께서는 기도하는 태도를 설명하며 무엇을 청하고 찾고 두드리라고 하셨나요?', options: ['끊임없이 청하고 찾고 두드리라', '한 번만 청하라', '아무것도 청하지 말라', '왕에게만 청하라'], answer: 0, explanation: '예수님께서는 청하여라, 찾아라, 문을 두드려라 하시며 끈기 있는 기도를 가르치셨습니다.' },
+      { reference: '루카 복음서 12장', question: '예수님께서는 하느님 앞에서 부유해지는 삶을 무엇과 대조하셨나요?', options: ['재산만 쌓고 자신을 위해 사는 삶', '가난한 이를 돕는 삶', '감사하는 삶', '기도하는 삶'], answer: 0, explanation: '어리석은 부자의 비유는 재산을 쌓으면서도 하느님 앞에서는 부유하지 못한 삶을 경고합니다.' },
+      { reference: '루카 복음서 14장', question: '예수님께서 큰 잔치의 비유에서 초대받은 이들이 거절한 이유로 등장하는 것은 무엇인가요?', options: ['밭과 겨릿소와 혼인', '전쟁과 질병과 기근', '성전과 왕궁과 시장', '여행과 사냥과 낚시'], answer: 0, explanation: '초대받은 이들은 밭을 샀거나 겨릿소를 샀거나 혼인했다는 이유로 잔치에 오지 않았습니다.' },
+      { reference: '루카 복음서 18장', question: '예수님께서는 성전에서 기도한 두 사람 중 누가 의롭게 되어 돌아갔다고 말씀하셨나요?', options: ['겸손히 죄를 고백한 세리', '자신을 자랑한 바리사이', '성전의 관리인', '로마 군인'], answer: 0, explanation: '예수님께서는 자신을 낮추어 자비를 청한 세리가 의롭게 되어 돌아갔다고 말씀하셨습니다.' },
+      { reference: '루카 복음서 22장', question: '예수님께서 체포되시기 전 제자들에게 깨어 기도하라고 하신 곳은 어디인가요?', options: ['올리브산', '시나이산', '카르멜산', '타보르산'], answer: 0, explanation: '예수님께서는 올리브산에서 제자들에게 유혹에 빠지지 않도록 기도하라고 하셨습니다.' },
+      { reference: '요한 복음서 2장 1절', question: '카나의 혼인 잔치에서 예수님께 도움을 요청한 사람은 누구인가요?', options: ['예수님의 어머니 마리아', '베드로', '니코데모', '세례자 요한'], answer: 0, explanation: '마리아는 포도주가 떨어졌음을 예수님께 알리며 잔치의 곤란한 상황을 맡겼습니다.' },
+      { reference: '요한 복음서 5장', question: '벳자타 못가에서 예수님께서 고쳐 주신 사람은 몇 년 동안 앓고 있었나요?', options: ['서른여덟 해', '열두 해', '일곱 해', '사십 해'], answer: 0, explanation: '그 사람은 서른여덟 해 동안 병을 앓았지만 예수님의 말씀으로 치유되었습니다.' },
+      { reference: '요한 복음서 7장', question: '예수님께서는 목마른 사람에게 자신에게 와서 무엇을 마시라고 말씀하셨나요?', options: ['믿으라', '금식하라', '성전을 떠나라', '왕을 찾아가라'], answer: 0, explanation: '예수님께서는 목마른 사람은 자신에게 와서 믿으라고 초대하시며 성령의 생수를 암시하셨습니다.' },
+      { reference: '요한 복음서 8장', question: '예수님께서는 죄를 지은 여인을 고발한 이들에게 무엇을 말씀하셨나요?', options: ['죄 없는 사람이 먼저 돌을 던져라', '모두 함께 돌을 던져라', '성전으로 데려가라', '왕에게 넘겨라'], answer: 0, explanation: '예수님께서는 죄 없는 사람이 먼저 돌을 던지라고 하시며 자비와 회개의 길을 열어 주셨습니다.' },
+      { reference: '요한 복음서 9장', question: '예수님께서 고쳐 주신 사람은 태어날 때부터 어떤 장애를 가지고 있었나요?', options: ['보지 못했다', '듣지 못했다', '걷지 못했다', '말하지 못했다'], answer: 0, explanation: '요한 복음서 9장은 예수님께서 태어날 때부터 눈먼 사람의 시력을 회복시키신 일을 전합니다.' },
+      { reference: '요한 복음서 10장', question: '예수님께서는 자신을 양들이 드나드는 무엇이라고 말씀하셨나요?', options: ['문', '등불', '우물', '사다리'], answer: 0, explanation: '예수님께서는 자신을 양들이 드나드는 문이라고 말씀하시며 구원과 생명의 길을 가리키셨습니다.' },
+      { reference: '요한 복음서 12장', question: '베타니아에서 마리아가 예수님의 발에 바른 것은 무엇인가요?', options: ['값비싼 나르드 향유', '올리브 기름', '물과 포도주', '향나무 가루'], answer: 0, explanation: '마리아는 값비싼 나르드 향유를 예수님의 발에 바르고 자신의 머리카락으로 닦았습니다.' },
+      { reference: '요한 복음서 14장', question: '예수님께서는 제자들에게 아버지께 가는 길이 무엇이라고 말씀하셨나요?', options: ['자신', '율법의 돌판', '예루살렘 성문', '광야의 길'], answer: 0, explanation: '예수님께서는 자신이 길이요 진리요 생명이며 자신을 통하지 않고서는 아버지께 갈 수 없다고 말씀하셨습니다.' }
     ];
 
     const catholicBibleMetadata = [
@@ -366,7 +384,7 @@
         sourceUrl: 'https://bible.cbck.or.kr/Knbnotes'
       };
     });
-    const DAILY_QUIZ_SIZE = 20;
+    const DAILY_QUIZ_SIZE = 10;
     let dailyQuestions = [];
     let current = 0;
     let score = 0;
