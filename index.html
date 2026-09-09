@@ -182,53 +182,87 @@
       { reference: '요한 묵시록 21장', question: '요한 묵시록에서 마지막에 하느님에게서 내려오는 거룩한 도시는 무엇인가요?', options: ['새 예루살렘', '새 베들레헴', '새 나자렛', '새 카파르나움'], answer: 0, explanation: '요한 묵시록은 하느님에게서 하늘로부터 내려오는 거룩한 도성 새 예루살렘을 보여 줍니다.' }
     ];
 
-    const questionPrefixes = [
-      '성경 내용을 떠올리며 답해 보세요.',
-      '본문의 흐름을 바탕으로 알맞은 답을 고르세요.',
-      '말씀을 읽고 다음 질문에 답하세요.',
-      '성경 속 사건을 바르게 이해한 것은 무엇인가요?',
-      '가톨릭 성경의 가르침에 비추어 답하세요.',
-      '다음 장면을 묵상하며 정답을 선택하세요.',
-      '해당 성경 구절의 내용을 떠올려 보세요.',
-      '성경 인물과 사건을 연결하여 답하세요.',
-      '말씀의 맥락에서 가장 알맞은 답은 무엇인가요?',
-      '오늘의 성경 공부를 시작하며 답해 보세요.'
+    const questionLeads = [
+      '다음 성경 장면을 이해한 내용으로',
+      '이 말씀에서 확인할 수 있는 사실로',
+      '본문의 사건을 설명한 문장으로',
+      '성경 인물의 행동을 설명한 내용으로',
+      '가톨릭 성경의 가르침에 비추어',
+      '해당 장면의 의미를 묻는 질문으로',
+      '말씀을 읽고 기억해야 할 내용으로',
+      '성경 공부에서 확인할 핵심으로',
+      '본문에 나타난 사건을 바르게 설명한 것으로',
+      '이 성경 구절을 묵상하며 고를 답으로'
     ];
 
-    const questionSuffixes = [
-      ' 가장 알맞은 답을 골라 보세요.',
-      ' 본문에 맞는 선택지를 고르세요.',
-      ' 네 가지 보기 중 하나를 선택하세요.',
-      ' 성경의 기록과 일치하는 것을 찾으세요.',
-      ' 핵심 내용을 확인해 보세요.',
-      ' 올바른 내용을 선택하세요.',
-      ' 말씀에 근거하여 판단해 보세요.',
-      ' 기억을 되살려 답해 보세요.',
-      ' 바른 설명을 찾아보세요.',
-      ' 묵상한 내용을 점검해 보세요.'
+    const questionForms = [
+      (lead, item) => `${lead} 가장 알맞은 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 옳은 설명은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경 기록과 일치하는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 올바르게 연결된 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 선택해야 할 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 가장 정확한 설명을 고르세요. ${item.question}`,
+      (lead, item) => `${lead} 본문에서 말하는 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 바르게 이해한 선택지는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 다음 보기 중 맞는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 기억해야 할 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 가장 적절한 답을 선택하세요. ${item.question}`,
+      (lead, item) => `${lead} 사실인 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문에 근거한 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 알맞게 설명한 보기는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 사건을 통해 알 수 있는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 다음 중 성경의 내용에 해당하는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 정답으로 알맞은 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문의 흐름과 맞는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 핵심 내용을 정확히 짚은 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 말씀 안에서 확인되는 사실은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 바른 성경 지식은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 장면에 대한 설명으로 맞는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문을 바르게 읽은 결과는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 네 가지 보기 중 성경적인 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 말씀을 기억하며 고를 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 사건의 결과를 바르게 말한 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 인물과 사건의 관계를 바르게 말한 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 하느님의 구원 역사와 맞닿은 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문을 바탕으로 선택할 수 있는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 독해한 내용 중 옳은 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경의 맥락에 맞는 설명은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 문항에서 요구하는 성경 사실은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 가장 분명하게 드러나는 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 하느님 말씀에 근거한 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문에서 배울 수 있는 사실은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 사건을 기억하는 올바른 방법은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경 본문을 요약한 답으로 맞는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 사건의 중심 내용을 고르면 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 말씀의 증언과 맞는 선택지는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 구절을 이해한 설명으로 알맞은 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경의 인물과 사건을 떠올릴 때 맞는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문을 왜곡하지 않은 설명은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 믿음의 관점에서 본문과 맞는 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 기록의 내용을 확인하는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 사건을 순서와 의미에 맞게 이해한 것은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문이 전하는 사실을 고르라면 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 올바른 성경 해석에 가까운 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 인물 또는 사건을 설명하는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경 지식으로 옳은 보기는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 오늘 복습할 본문 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 장절의 내용과 일치하는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 본문을 읽은 사람이라면 고를 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 가장 정확하게 답한 선택지는 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 성경의 메시지와 조화를 이루는 답은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 이 문항의 정답을 설명하는 내용은 무엇인가요? ${item.question}`,
+      (lead, item) => `${lead} 말씀의 사실 관계를 확인하면 무엇인가요? ${item.question}`
     ];
 
     function createQuestionBank(baseQuestions) {
-      const bank = [];
-      let variant = 0;
-
-      while (bank.length < 2000) {
-        baseQuestions.forEach((item, itemIndex) => {
-          questionPrefixes.forEach((prefix, prefixIndex) => {
-            questionSuffixes.forEach((suffix, suffixIndex) => {
-              if (bank.length >= 2000) return;
-              const variantNumber = variant + itemIndex + prefixIndex + suffixIndex;
-              bank.push({
-                ...item,
-                question: `${prefix} ${item.question} ${suffix} (복습 번호 ${variantNumber + 1})`
-              });
-              variant++;
-            });
-          });
-        });
-      }
-
-      return bank;
+      return baseQuestions.flatMap((item, itemIndex) => questionForms.map((form, formIndex) => ({
+        id: `${item.reference}-${itemIndex}-${formIndex}`,
+        reference: item.reference,
+        question: form(questionLeads[formIndex % questionLeads.length], item),
+        options: [...item.options],
+        answer: item.answer,
+        explanation: item.explanation
+      }))).slice(0, 2000);
     }
 
     const questionBank = createQuestionBank(questions);
@@ -277,10 +311,19 @@
     function buildDailyQuestions() {
       const dateKey = getDateKey();
       const drawKey = `catholic-quiz-draw-${dateKey}`;
+      const usedKey = 'catholic-quiz-used-question-ids';
       const drawNumber = Number(localStorage.getItem(drawKey) || 0);
+      const usedIds = new Set(JSON.parse(localStorage.getItem(usedKey) || '[]'));
       localStorage.setItem(drawKey, String(drawNumber + 1));
       const seed = createSeed(`${dateKey}-${drawNumber}`);
-      const selectedQuestions = seededShuffle(questionBank, seed).slice(0, DAILY_QUIZ_SIZE);
+      let availableQuestions = questionBank.filter((item) => !usedIds.has(item.id));
+      if (availableQuestions.length < DAILY_QUIZ_SIZE) {
+        usedIds.clear();
+        availableQuestions = [...questionBank];
+      }
+      const selectedQuestions = seededShuffle(availableQuestions, seed).slice(0, DAILY_QUIZ_SIZE);
+      selectedQuestions.forEach((item) => usedIds.add(item.id));
+      localStorage.setItem(usedKey, JSON.stringify([...usedIds]));
 
       dailyQuestions = selectedQuestions.map((item, index) => {
         const shuffledOptions = seededShuffle(
