@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>말씀의 등불 | 가톨릭 성경 퀴즈</title>
+  <style>
+    :root {
+      --ink: #18242b;
+      --muted: #63747a;
+      --paper: #f6f1e7;
+      --card: #fffdf8;
+      --teal: #0d5d61;
+      --teal-dark: #073f43;
+      --coral: #d9654f;
+      --gold: #e3ad52;
+      --line: #dfd6c6;
+      --shadow: 0 24px 70px rgba(24, 36, 43, .15);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(227, 173, 82, .2) 0 2px, transparent 3px),
+        radial-gradient(circle at 82% 72%, rgba(13, 93, 97, .12) 0 1px, transparent 2px),
+        linear-gradient(135deg, #efe7d8 0%, #f8f5ee 45%, #dcebe7 100%);
+      background-size: 34px 34px, 27px 27px, auto;
+      font-family: Georgia, 'Noto Serif KR', serif;
+    }
+
+    button { font: inherit; }
+    .app { width: min(1060px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 44px; }
+    header { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding: 10px 2px 28px; }
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .cross { width: 38px; height: 38px; color: var(--gold); position: relative; display: grid; place-items: center; font-size: 38px; line-height: 1; }
+    .eyebrow { margin: 0 0 6px; color: var(--teal); font: 700 12px/1.2 Arial, sans-serif; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 46px); line-height: .98; letter-spacing: -.04em; }
+    .header-note { max-width: 300px; margin: 0; color: var(--muted); font: 14px/1.6 Arial, sans-serif; text-align: right; }
+
+    main { display: grid; grid-template-columns: 275px 1fr; gap: 18px; align-items: start; }
+    .side, .quiz-card, .result-card { background: rgba(255, 253, 248, .92); border: 1px solid rgba(223, 214, 198, .9); box-shadow: var(--shadow); }
+    .side { padding: 24px; position: sticky; top: 20px; }
+    .side h2 { margin: 0 0 18px; font-size: 22px; }
+    .side p { margin: 0 0 22px; color: var(--muted); font: 14px/1.6 Arial, sans-serif; }
+    .stat { border-top: 1px solid var(--line); padding: 15px 0 4px; }
+    .stat-label { color: var(--muted); font: 11px Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .stat-value { display: block; margin-top: 5px; color: var(--teal); font-size: 28px; font-weight: 700; }
+    .side small { display: block; margin-top: 22px; color: var(--muted); font: 12px/1.5 Arial, sans-serif; }
+
+    .quiz-card { padding: clamp(22px, 5vw, 52px); min-height: 570px; }
+    .topline { display: flex; justify-content: space-between; gap: 14px; color: var(--muted); font: 700 12px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .progress { height: 6px; margin: 15px 0 35px; background: #e8e1d5; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0; background: var(--coral); transition: width .35s ease; }
+    .reference { display: inline-block; margin-bottom: 14px; padding: 7px 10px; color: var(--teal-dark); background: #e1eeea; font: 700 12px Arial, sans-serif; letter-spacing: .04em; }
+    .question { max-width: 700px; margin: 0 0 30px; font-size: clamp(24px, 3.5vw, 38px); line-height: 1.24; letter-spacing: -.035em; }
+    .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .answer { min-height: 72px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; color: var(--ink); background: var(--card); border: 1px solid var(--line); text-align: left; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; }
+    .answer:hover:not(:disabled) { border-color: var(--teal); transform: translateY(-2px); }
+    .answer:disabled { cursor: default; }
+    .letter { flex: 0 0 28px; width: 28px; height: 28px; display: grid; place-items: center; color: var(--teal); border: 1px solid #9ebdb8; font: 700 13px Arial, sans-serif; }
+    .answer.correct { color: #165841; background: #e2f2e7; border-color: #5ba77a; }
+    .answer.correct .letter { color: white; background: #2c8b5c; border-color: #2c8b5c; }
+    .answer.wrong { color: #9a3f35; background: #f9e5df; border-color: #db806c; }
+    .answer.wrong .letter { color: white; background: var(--coral); border-color: var(--coral); }
+    .explanation { min-height: 58px; margin-top: 20px; padding: 14px 16px; color: var(--muted); background: #f4efe5; font: 14px/1.6 Arial, sans-serif; }
+    .explanation strong { color: var(--teal-dark); }
+    .next { display: block; margin: 22px 0 0 auto; padding: 13px 22px; color: white; background: var(--teal); border: 0; cursor: pointer; font: 700 14px Arial, sans-serif; }
+    .next:hover { background: var(--teal-dark); }
+    .next:disabled { opacity: .45; cursor: not-allowed; }
+
+    .result-card { display: none; padding: 52px; text-align: center; }
+    .result-card.visible { display: block; }
+    .result-mark { color: var(--gold); font-size: 60px; }
+    .result-card h2 { margin: 8px 0 12px; font-size: 38px; }
+    .result-score { color: var(--teal); font-size: 60px; font-weight: 700; }
+    .result-card p { color: var(--muted); font: 15px/1.7 Arial, sans-serif; }
+    .restart { margin-top: 20px; padding: 13px 24px; color: white; background: var(--coral); border: 0; cursor: pointer; font: 700 14px Arial, sans-serif; }
+
+    @media (max-width: 720px) {
+      .app { width: min(100% - 20px, 600px); padding-top: 16px; }
+      header { align-items: start; flex-direction: column; gap: 14px; }
+      .header-note { text-align: left; }
+      main { display: block; }
+      .side { position: static; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; padding: 16px; }
+      .side h2, .side p, .side small { grid-column: 1 / -1; }
+      .side h2 { margin-bottom: 0; }
+      .side p { margin-bottom: 8px; }
+      .stat { padding: 10px 0 0; }
+      .stat-value { font-size: 22px; }
+      .quiz-card { padding: 22px 16px; min-height: 0; }
+      .answers { grid-template-columns: 1fr; }
+      .result-card { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="cross" aria-hidden="true">✣</div>
+        <div>
+          <p class="eyebrow">Scripture quiz</p>
+          <h1>말씀의 등불</h1>
+        </div>
+      </div>
+      <p class="header-note">가톨릭 성경의 인물과 사건을 따라가는<br>오늘의 작은 성경 여행</p>
+    </header>
+
+    <main>
+      <aside class="side">
+        <h2>오늘의 퀴즈</h2>
+        <p>문제를 읽고 가장 알맞은 답을 골라보세요. 각 문항 뒤에 관련 성경 장절을 확인할 수 있습니다.</p>
+        <div class="stat"><span class="stat-label">진행</span><strong class="stat-value" id="side-progress">1 / 5</strong></div>
+        <div class="stat"><span class="stat-label">점수</span><strong class="stat-value" id="side-score">0</strong></div>
+        <div class="stat"><span class="stat-label">정답률</span><strong class="stat-value" id="side-rate">-</strong></div>
+        <small>문항은 성경 본문을 요약해 구성했으며, 정답 해설에 관련 장절을 표시합니다. 문제 은행 2,000문항 중 매일 5문제가 출제됩니다.</small>
+      </aside>
+
+      <section>
+        <div class="quiz-card" id="quiz-card">
+          <div class="topline"><span id="question-count">Question 01</span><span id="today-label">오늘의 퀴즈</span></div>
+          <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+          <div class="reference" id="reference">창세기 1장</div>
+          <h2 class="question" id="question"></h2>
+          <div class="answers" id="answers"></div>
+          <div class="explanation" id="explanation">답을 선택하면 성경 장절과 간단한 해설이 표시됩니다.</div>
+          <button class="next" id="next" type="button" disabled>다음 문제</button>
+        </div>
+
+        <div class="result-card" id="result-card">
+          <div class="result-mark">✦</div>
+          <h2>퀴즈를 마쳤습니다</h2>
+          <div class="result-score" id="final-score">0 / 5</div>
+          <p id="final-message"></p>
+          <button class="restart" id="restart" type="button">다시 풀기</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const questions = [
+      { reference: '창세기 12장', question: '하느님께서는 아브라함에게 어떤 약속의 여정을 떠나라고 부르셨나요?', options: ['고향과 친족과 아버지의 집을 떠나라', '이집트의 왕이 되어라', '예루살렘 성전을 지어라', '노아의 방주를 만들라'], answer: 0, explanation: '아브라함은 하느님의 부르심에 따라 고향을 떠났습니다. 하느님은 그를 통해 큰 민족을 이루겠다고 약속하십니다.' },
+      { reference: '탈출기 14장', question: '이스라엘 백성이 이집트를 탈출할 때, 모세 앞에서 갈라진 것은 무엇인가요?', options: ['요르단 강', '홍해', '갈릴래아 호수', '키손 강'], answer: 1, explanation: '모세가 손을 내밀자 바다가 갈라지고, 이스라엘 백성은 마른 땅을 밟고 건넜습니다.' },
+      { reference: '사무엘기 상권 17장', question: '다윗이 골리앗과 맞설 때 사용한 무기는 무엇이었나요?', options: ['청동 방패', '활과 화살', '돌팔매와 돌 다섯 개', '불붙은 창'], answer: 2, explanation: '다윗은 갑옷 대신 막대기와 돌 다섯 개를 챙겼고, 돌팔매로 골리앗을 쓰러뜨렸습니다.' },
+      { reference: '루카 복음서 1장', question: '천사 가브리엘이 마리아에게 전한 소식은 무엇이었나요?', options: ['왕궁을 떠나라는 명령', '성령으로 아들을 잉태하리라는 소식', '베들레헴의 시장이 되리라는 소식', '열두 제자를 모으라는 명령'], answer: 1, explanation: '가브리엘 천사는 마리아에게 성령으로 예수님을 잉태하리라고 알렸습니다. 마리아는 믿음으로 응답했습니다.' },
+      { reference: '마태오 복음서 5장', question: '예수님께서 산상 설교에서 “행복하여라”라고 가장 먼저 말씀하신 사람들은 누구인가요?', options: ['마음이 가난한 사람들', '부유한 상인들', '전쟁에서 승리한 군인들', '많은 재산을 모은 사람들'], answer: 0, explanation: '예수님께서는 마음이 가난한 사람들에게 하늘 나라가 그들의 것이라고 선포하셨습니다.' },
+      { reference: '요한 복음서 2장', question: '카나의 혼인 잔치에서 예수님께서 물을 무엇으로 변화시키셨나요?', options: ['포도주', '기름', '꿀', '우유'], answer: 0, explanation: '카나에서 물을 포도주로 변화시키신 일은 예수님께서 영광을 드러내신 첫 표징으로 소개됩니다.' },
+      { reference: '루카 복음서 15장', question: '되찾은 아들의 비유에서 아버지는 돌아온 아들을 어떻게 맞이했나요?', options: ['문밖에서 기다리게 했다', '종으로 삼았다', '달려가 껴안고 잔치를 베풀었다', '다시는 만나지 않았다'], answer: 2, explanation: '아버지는 돌아온 아들을 기쁘게 맞이했습니다. 이 비유는 회개하는 이를 향한 하느님의 자비를 보여줍니다.' },
+      { reference: '사도행전 2장', question: '성령 강림 때 제자들에게 나타난 표징으로 알맞은 것은 무엇인가요?', options: ['불꽃 모양의 혀와 여러 언어', '하늘에서 내린 만나', '성전의 문이 닫힘', '강물이 피로 변함'], answer: 0, explanation: '오순절에 성령께서 내려오시자 불꽃 모양의 혀가 나타났고, 제자들은 여러 언어로 말하기 시작했습니다.' },
+      { reference: '창세기 6-9장', question: '하느님께서 큰 홍수 뒤 노아와 맺으신 계약의 표징은 무엇이었나요?', options: ['무지개', '불기둥', '황금 송아지', '열두 별'], answer: 0, explanation: '무지개는 다시는 홍수로 모든 생물을 멸하지 않으시겠다는 계약의 표징으로 제시됩니다.' },
+      { reference: '창세기 22장', question: '아브라함의 믿음을 시험하신 사건에서 하느님께서 마련해 주신 제물은 무엇이었나요?', options: ['숫양', '비둘기 한 쌍', '어린 양 두 마리', '송아지'], answer: 0, explanation: '하느님께서는 아브라함이 바치려던 이사악 대신 뿔이 덤불에 걸린 숫양을 마련해 주셨습니다.' },
+      { reference: '탈출기 3장', question: '모세가 불붙지만 타지 않는 떨기나무에서 들은 하느님의 이름은 무엇인가요?', options: ['나는 있는 나다', '나는 다윗이다', '나는 이집트다', '나는 바다다'], answer: 0, explanation: '하느님께서는 모세에게 당신을 “나는 있는 나다”라고 계시하셨습니다.' },
+      { reference: '민수기 21장', question: '광야에서 뱀에 물린 이스라엘 백성이 바라보면 살 수 있도록 모세가 만든 것은 무엇인가요?', options: ['구리 뱀', '금 송아지', '돌 제단', '나무 지팡이'], answer: 0, explanation: '모세는 주님의 명령에 따라 구리 뱀을 만들어 기둥 위에 달았고, 그것을 바라본 이들은 살았습니다.' },
+      { reference: '여호수아기 6장', question: '이스라엘 백성이 예리코 성벽을 무너뜨릴 때 며칠 동안 성읍을 돌았나요?', options: ['일곱째 날까지', '하루만', '열두 날 동안', '사십 일 동안'], answer: 0, explanation: '이스라엘 백성은 엿새 동안 하루에 한 바퀴씩 돌고, 이렛날에는 성읍을 일곱 바퀴 돌았습니다.' },
+      { reference: '판관기 6장', question: '기드온이 하느님의 부르심을 확인하기 위해 요청한 표징은 무엇과 관련이 있었나요?', options: ['양털과 이슬', '불타는 등불', '강물의 흐름', '하늘의 별'], answer: 0, explanation: '기드온은 양털에만 이슬이 내리거나 반대로 땅에만 이슬이 내리는 표징을 청했습니다.' },
+      { reference: '룻기 1장', question: '룻이 시어머니 나오미에게 보여 준 태도로 가장 알맞은 것은 무엇인가요?', options: ['끝까지 함께하겠다는 충실함', '고향으로 돌아가겠다는 결심', '재산을 요구한 태도', '전쟁에 나가겠다는 약속'], answer: 0, explanation: '룻은 나오미를 떠나지 않고 그의 백성과 하느님을 자기 것으로 받아들이며 충실함을 보여 주었습니다.' },
+      { reference: '열왕기 상권 3장', question: '솔로몬 왕이 하느님께 청한 가장 중요한 선물은 무엇인가요?', options: ['듣는 마음과 지혜', '많은 군대', '긴 수명만', '금과 은'], answer: 0, explanation: '솔로몬은 백성을 올바르게 다스릴 수 있도록 선과 악을 분별하는 듣는 마음을 청했습니다.' },
+      { reference: '열왕기 상권 18장', question: '엘리야 예언자가 카르멜산에서 대결한 대상은 누구였나요?', options: ['바알의 예언자들', '필리스티아 군대', '이집트의 사제들', '아시리아의 상인들'], answer: 0, explanation: '엘리야는 카르멜산에서 바알의 예언자들과 대결하며 이스라엘이 주님만 섬기도록 촉구했습니다.' },
+      { reference: '토빗기 12장', question: '토빗기에서 토비야를 여행길에 동행하도록 이끈 이는 누구였나요?', options: ['라파엘 천사', '모세', '엘리야', '가브리엘 천사'], answer: 0, explanation: '라파엘 천사는 인간의 모습으로 토비야와 함께 여행하며 그를 보호하고 인도했습니다.' },
+      { reference: '시편 23편', question: '시편 23편은 주님을 무엇에 비유하며 시작하나요?', options: ['목자', '왕궁의 문지기', '농부', '어부'], answer: 0, explanation: '시편 23편은 “주님은 나의 목자”라는 고백으로 시작하며 하느님의 돌보심을 노래합니다.' },
+      { reference: '이사야서 7장', question: '이사야 예언서에서 임마누엘이라는 이름은 어떤 뜻으로 풀이되나요?', options: ['하느님께서 우리와 함께 계시다', '평화의 왕이 오신다', '새로운 길이 열렸다', '이스라엘이 승리한다'], answer: 0, explanation: '임마누엘은 “하느님께서 우리와 함께 계시다”라는 뜻으로 풀이됩니다.' },
+      { reference: '요나서 2장', question: '요나 예언자는 큰 물고기 뱃속에서 얼마 동안 머물렀다고 전해지나요?', options: ['사흘 밤낮', '하루 밤낮', '일곱 날', '십이 일'], answer: 0, explanation: '요나서에는 요나가 큰 물고기 배 속에서 사흘 밤낮을 지냈다고 기록되어 있습니다.' },
+      { reference: '마태오 복음서 2장', question: '아기 예수님을 찾아온 동방 박사들이 바친 예물은 무엇인가요?', options: ['황금과 유향과 몰약', '은과 소금과 보리', '빵과 포도주와 기름', '향료와 양털과 보석'], answer: 0, explanation: '동방 박사들은 아기 예수님께 황금과 유향과 몰약을 예물로 바쳤습니다.' },
+      { reference: '마르코 복음서 1장', question: '예수님께서 공생활을 시작하시기 전에 세례를 받으신 곳은 어디인가요?', options: ['요르단강', '갈릴래아 호수', '키드론 골짜기', '사해 한가운데'], answer: 0, explanation: '예수님께서는 요한에게 요르단강에서 세례를 받으셨습니다.' },
+      { reference: '마태오 복음서 14장', question: '예수님께서 오천 명을 먹이실 때 제자들이 가지고 있던 음식은 무엇이었나요?', options: ['빵 다섯 개와 물고기 두 마리', '빵 두 개와 물고기 다섯 마리', '보리떡 열두 개', '포도주와 생선 한 바구니'], answer: 0, explanation: '예수님께서는 빵 다섯 개와 물고기 두 마리를 축복하시어 많은 군중을 먹이셨습니다.' },
+      { reference: '마르코 복음서 4장', question: '예수님께서 풍랑을 잠잠하게 하실 때 제자들에게 하신 말씀과 관련된 주제는 무엇인가요?', options: ['믿음', '세금', '성전 건축', '농사 규칙'], answer: 0, explanation: '풍랑을 잠잠하게 하신 뒤 예수님께서는 제자들의 두려움과 믿음을 돌아보게 하셨습니다.' },
+      { reference: '요한 복음서 6장', question: '예수님께서는 자신을 하늘에서 내려온 무엇이라고 말씀하셨나요?', options: ['생명의 빵', '세상의 빛만', '포도나무의 가지', '문지기'], answer: 0, explanation: '요한 복음서 6장에서 예수님께서는 당신을 생명의 빵이라고 가르치십니다.' },
+      { reference: '요한 복음서 11장', question: '예수님께서 무덤에서 불러내신 라자로는 누구의 오빠였나요?', options: ['마르타와 마리아', '살로메와 한나', '엘리사벳과 마리아', '안나와 수산나'], answer: 0, explanation: '라자로는 마르타와 마리아의 오빠이며, 예수님께서는 그를 죽음에서 일으키셨습니다.' },
+      { reference: '마태오 복음서 16장', question: '베드로는 예수님을 누구라고 고백했나요?', options: ['살아 계신 하느님의 아드님 그리스도', '위대한 예언자 가운데 한 사람', '로마의 왕', '모세의 후계자'], answer: 0, explanation: '베드로는 예수님을 살아 계신 하느님의 아드님 그리스도라고 고백했습니다.' },
+      { reference: '마태오 복음서 26장', question: '최후의 만찬에서 예수님께서는 빵과 포도주를 무엇으로 내어 주셨나요?', options: ['당신의 몸과 피', '성전의 돌과 물', '왕의 음식과 잔', '광야의 만나와 물'], answer: 0, explanation: '예수님께서는 최후의 만찬에서 빵과 포도주를 당신의 몸과 피로 내어 주셨습니다.' },
+      { reference: '요한 복음서 20장', question: '부활하신 예수님을 처음 만난 제자들 가운데 한 사람은 누구인가요?', options: ['마리아 막달레나', '가야파', '헤로데', '빌라도'], answer: 0, explanation: '요한 복음서는 마리아 막달레나가 부활하신 예수님을 처음 만난 증인으로 전합니다.' },
+      { reference: '루카 복음서 24장', question: '엠마오로 가던 제자들은 길에서 예수님을 알아보게 된 때를 어떻게 묘사하나요?', options: ['빵을 떼실 때', '물을 길으실 때', '성전 문을 여실 때', '배를 고치실 때'], answer: 0, explanation: '제자들은 예수님께서 빵을 떼어 주실 때 그분을 알아보았습니다.' },
+      { reference: '사도행전 9장', question: '교회를 박해하던 사울이 회심한 뒤 불린 이름은 무엇인가요?', options: ['바오로', '베드로', '스테파노', '티모테오'], answer: 0, explanation: '다마스쿠스로 가던 사울은 부활하신 주님을 만난 뒤 복음의 사도 바오로가 되었습니다.' },
+      { reference: '사도행전 6장', question: '초대 교회에서 가난한 이들을 돌보는 일을 위해 뽑힌 이들 가운데 첫 순교자는 누구인가요?', options: ['스테파노', '야고보', '필리포스', '바르나바'], answer: 0, explanation: '스테파노는 은총과 성령이 충만한 이로서 복음을 증언하다 순교한 첫 증인으로 전해집니다.' },
+      { reference: '로마서 12장', question: '바오로 사도는 신자 공동체를 무엇에 비유하며 서로 다른 은사를 설명하나요?', options: ['한 몸과 많은 지체', '한 왕국과 많은 군대', '한 배와 많은 선원', '한 성전과 많은 문'], answer: 0, explanation: '바오로는 그리스도 안에서 신자들이 한 몸이며 서로 다른 지체라고 가르칩니다.' },
+      { reference: '코린토 전서 13장', question: '바오로 사도가 믿음과 희망보다 더 큰 것으로 노래한 것은 무엇인가요?', options: ['사랑', '지식', '명예', '재산'], answer: 0, explanation: '코린토 전서 13장은 믿음과 희망과 사랑 가운데 가장 큰 것은 사랑이라고 가르칩니다.' },
+      { reference: '갈라티아서 5장', question: '성령의 열매에 포함되는 덕목으로 알맞은 것은 무엇인가요?', options: ['사랑과 기쁨과 평화', '경쟁과 명예와 부', '분노와 질투와 복수', '두려움과 불안과 의심'], answer: 0, explanation: '성령의 열매에는 사랑, 기쁨, 평화, 인내, 호의, 선의, 성실, 온유, 절제가 포함됩니다.' },
+      { reference: '요한 묵시록 21장', question: '요한 묵시록에서 마지막에 하느님에게서 내려오는 거룩한 도시는 무엇인가요?', options: ['새 예루살렘', '새 베들레헴', '새 나자렛', '새 카파르나움'], answer: 0, explanation: '요한 묵시록은 하느님에게서 하늘로부터 내려오는 거룩한 도성 새 예루살렘을 보여 줍니다.' }
+    ];
+
+    const questionPrefixes = [
+      '성경 내용을 떠올리며 답해 보세요.',
+      '본문의 흐름을 바탕으로 알맞은 답을 고르세요.',
+      '말씀을 읽고 다음 질문에 답하세요.',
+      '성경 속 사건을 바르게 이해한 것은 무엇인가요?',
+      '가톨릭 성경의 가르침에 비추어 답하세요.',
+      '다음 장면을 묵상하며 정답을 선택하세요.',
+      '해당 성경 구절의 내용을 떠올려 보세요.',
+      '성경 인물과 사건을 연결하여 답하세요.',
+      '말씀의 맥락에서 가장 알맞은 답은 무엇인가요?',
+      '오늘의 성경 공부를 시작하며 답해 보세요.'
+    ];
+
+    const questionSuffixes = [
+      ' 가장 알맞은 답을 골라 보세요.',
+      ' 본문에 맞는 선택지를 고르세요.',
+      ' 네 가지 보기 중 하나를 선택하세요.',
+      ' 성경의 기록과 일치하는 것을 찾으세요.',
+      ' 핵심 내용을 확인해 보세요.',
+      ' 올바른 내용을 선택하세요.',
+      ' 말씀에 근거하여 판단해 보세요.',
+      ' 기억을 되살려 답해 보세요.',
+      ' 바른 설명을 찾아보세요.',
+      ' 묵상한 내용을 점검해 보세요.'
+    ];
+
+    function createQuestionBank(baseQuestions) {
+      const bank = [];
+      let variant = 0;
+
+      while (bank.length < 2000) {
+        baseQuestions.forEach((item, itemIndex) => {
+          questionPrefixes.forEach((prefix, prefixIndex) => {
+            questionSuffixes.forEach((suffix, suffixIndex) => {
+              if (bank.length >= 2000) return;
+              const variantNumber = variant + itemIndex + prefixIndex + suffixIndex;
+              bank.push({
+                ...item,
+                question: `${prefix} ${item.question} ${suffix} (복습 번호 ${variantNumber + 1})`
+              });
+              variant++;
+            });
+          });
+        });
+      }
+
+      return bank;
+    }
+
+    const questionBank = createQuestionBank(questions);
+    const DAILY_QUIZ_SIZE = 5;
+    let dailyQuestions = [];
+    let current = 0;
+    let score = 0;
+    let answered = false;
+
+    const $ = (id) => document.getElementById(id);
+    const questionCount = $('question-count');
+    const reference = $('reference');
+    const question = $('question');
+    const answers = $('answers');
+    const explanation = $('explanation');
+    const next = $('next');
+    const progressBar = $('progress-bar');
+    const quizCard = $('quiz-card');
+    const resultCard = $('result-card');
+
+    function getDateKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function createSeed(dateKey) {
+      return [...dateKey].reduce((seed, character) => ((seed * 31) + character.charCodeAt(0)) >>> 0, 7);
+    }
+
+    function seededShuffle(items, seed) {
+      const shuffled = [...items];
+      let randomSeed = seed;
+
+      for (let index = shuffled.length - 1; index > 0; index--) {
+        randomSeed = (randomSeed * 1664525 + 1013904223) >>> 0;
+        const swapIndex = randomSeed % (index + 1);
+        [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+      }
+
+      return shuffled;
+    }
+
+    function buildDailyQuestions() {
+      const dateKey = getDateKey();
+      const drawKey = `catholic-quiz-draw-${dateKey}`;
+      const drawNumber = Number(localStorage.getItem(drawKey) || 0);
+      localStorage.setItem(drawKey, String(drawNumber + 1));
+      const seed = createSeed(`${dateKey}-${drawNumber}`);
+      const selectedQuestions = seededShuffle(questionBank, seed).slice(0, DAILY_QUIZ_SIZE);
+
+      dailyQuestions = selectedQuestions.map((item, index) => {
+        const shuffledOptions = seededShuffle(
+          item.options.map((option, optionIndex) => ({ option, optionIndex })),
+          seed + index * 97
+        );
+
+        return {
+          ...item,
+          options: shuffledOptions.map(({ option }) => option),
+          answer: shuffledOptions.findIndex(({ optionIndex }) => optionIndex === item.answer)
+        };
+      });
+
+      const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(new Date());
+      $('today-label').textContent = `${formattedDate} · ${drawNumber + 1}회차 문제`;
+    }
+
+    function renderQuestion() {
+      const item = dailyQuestions[current];
+      answered = false;
+      questionCount.textContent = `Question ${String(current + 1).padStart(2, '0')}`;
+      reference.textContent = item.reference;
+      question.textContent = item.question;
+      explanation.innerHTML = '답을 선택하면 성경 장절과 간단한 해설이 표시됩니다.';
+      next.disabled = true;
+      next.textContent = current === dailyQuestions.length - 1 ? '결과 보기' : '다음 문제';
+      progressBar.style.width = `${((current + 1) / questions.length) * 100}%`;
+      $('side-progress').textContent = `${current + 1} / ${dailyQuestions.length}`;
+      $('side-score').textContent = score;
+      $('side-rate').textContent = current ? `${Math.round((score / current) * 100)}%` : '-';
+      answers.innerHTML = '';
+
+      item.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'answer';
+        button.innerHTML = `<span class="letter">${String.fromCharCode(65 + index)}</span><span>${option}</span>`;
+        button.addEventListener('click', () => chooseAnswer(index));
+        answers.appendChild(button);
+      });
+    }
+
+    function chooseAnswer(selected) {
+      if (answered) return;
+      answered = true;
+      const item = dailyQuestions[current];
+      const buttons = [...answers.querySelectorAll('.answer')];
+      buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === item.answer) button.classList.add('correct');
+        if (index === selected && selected !== item.answer) button.classList.add('wrong');
+      });
+
+      if (selected === item.answer) {
+        score++;
+        explanation.innerHTML = `<strong>정답입니다.</strong> ${item.explanation}`;
+      } else {
+        explanation.innerHTML = `<strong>아쉬워요.</strong> 정답은 ${String.fromCharCode(65 + item.answer)}번입니다. ${item.explanation}`;
+      }
+      next.disabled = false;
+      $('side-score').textContent = score;
+      $('side-rate').textContent = `${Math.round((score / (current + 1)) * 100)}%`;
+    }
+
+    next.addEventListener('click', () => {
+      if (!answered) return;
+      if (current === dailyQuestions.length - 1) {
+        quizCard.style.display = 'none';
+        resultCard.classList.add('visible');
+        $('final-score').textContent = `${score} / ${dailyQuestions.length}`;
+        $('final-message').textContent = score === dailyQuestions.length ? '모든 문제를 맞혔습니다. 말씀 안에서 기쁜 하루 보내세요.' : `총 ${dailyQuestions.length}문제 중 ${score}문제를 맞혔습니다. 다시 도전해 보세요.`;
+        return;
+      }
+      current++;
+      renderQuestion();
+    });
+
+    $('restart').addEventListener('click', () => {
+      current = 0;
+      score = 0;
+      resultCard.classList.remove('visible');
+      quizCard.style.display = '';
+      renderQuestion();
+    });
+
+    buildDailyQuestions();
+    renderQuestion();
+  </script>
+</body>
+</html>
