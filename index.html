@@ -115,10 +115,10 @@
       <aside class="side">
         <h2>오늘의 퀴즈</h2>
         <p>문제를 읽고 가장 알맞은 답을 골라보세요. 각 문항 뒤에 관련 성경 장절을 확인할 수 있습니다.</p>
-        <div class="stat"><span class="stat-label">진행</span><strong class="stat-value" id="side-progress">1 / 5</strong></div>
+        <div class="stat"><span class="stat-label">진행</span><strong class="stat-value" id="side-progress">1 / 20</strong></div>
         <div class="stat"><span class="stat-label">점수</span><strong class="stat-value" id="side-score">0</strong></div>
         <div class="stat"><span class="stat-label">정답률</span><strong class="stat-value" id="side-rate">-</strong></div>
-        <small>문항은 성경 본문을 요약해 구성했으며, 정답 해설에 관련 장절을 표시합니다. 문제 은행 2,000문항 중 매일 5문제가 출제됩니다.</small>
+        <small>문항은 성경 본문을 요약해 구성했으며, 정답 해설에 관련 장절을 표시합니다. 문제 은행 2,000문항 중 매 회차 20문제가 출제됩니다.</small>
       </aside>
 
       <section>
@@ -136,7 +136,7 @@
         <div class="result-card" id="result-card">
           <div class="result-mark">✦</div>
           <h2>퀴즈를 마쳤습니다</h2>
-          <div class="result-score" id="final-score">0 / 5</div>
+          <div class="result-score" id="final-score">0 / 20</div>
           <p id="final-message"></p>
           <button class="restart" id="restart" type="button">다시 풀기</button>
         </div>
@@ -347,7 +347,7 @@
         sourceUrl: 'https://bible.cbck.or.kr/Knbnotes'
       };
     });
-    const DAILY_QUIZ_SIZE = 5;
+    const DAILY_QUIZ_SIZE = 20;
     let dailyQuestions = [];
     let current = 0;
     let score = 0;
