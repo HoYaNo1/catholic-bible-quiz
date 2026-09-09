@@ -55,6 +55,8 @@
     .progress { height: 6px; margin: 15px 0 35px; background: #e8e1d5; overflow: hidden; }
     .progress-bar { height: 100%; width: 0; background: var(--coral); transition: width .35s ease; }
     .reference { display: inline-block; margin-bottom: 14px; padding: 7px 10px; color: var(--teal-dark); background: #e1eeea; font: 700 12px Arial, sans-serif; letter-spacing: .04em; }
+    .source-note { margin: -4px 0 18px; color: var(--muted); font: 12px/1.4 Arial, sans-serif; }
+    .source-note a { color: var(--teal); }
     .question { max-width: 700px; margin: 0 0 30px; font-size: clamp(24px, 3.5vw, 38px); line-height: 1.24; letter-spacing: -.035em; }
     .answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .answer { min-height: 72px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; color: var(--ink); background: var(--card); border: 1px solid var(--line); text-align: left; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; }
@@ -124,6 +126,7 @@
           <div class="topline"><span id="question-count">Question 01</span><span id="today-label">오늘의 퀴즈</span></div>
           <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
           <div class="reference" id="reference">창세기 1장</div>
+          <div class="source-note"><span id="book-meta">구약 · 오경</span> · <a id="source-link" href="https://bible.cbck.or.kr/Knbnotes" target="_blank" rel="noopener">주석 성경 메타데이터</a></div>
           <h2 class="question" id="question"></h2>
           <div class="answers" id="answers"></div>
           <div class="explanation" id="explanation">답을 선택하면 성경 장절과 간단한 해설이 표시됩니다.</div>
@@ -182,90 +185,37 @@
       { reference: '요한 묵시록 21장', question: '요한 묵시록에서 마지막에 하느님에게서 내려오는 거룩한 도시는 무엇인가요?', options: ['새 예루살렘', '새 베들레헴', '새 나자렛', '새 카파르나움'], answer: 0, explanation: '요한 묵시록은 하느님에게서 하늘로부터 내려오는 거룩한 도성 새 예루살렘을 보여 줍니다.' }
     ];
 
-    const questionLeads = [
-      '다음 성경 장면을 이해한 내용으로',
-      '이 말씀에서 확인할 수 있는 사실로',
-      '본문의 사건을 설명한 문장으로',
-      '성경 인물의 행동을 설명한 내용으로',
-      '가톨릭 성경의 가르침에 비추어',
-      '해당 장면의 의미를 묻는 질문으로',
-      '말씀을 읽고 기억해야 할 내용으로',
-      '성경 공부에서 확인할 핵심으로',
-      '본문에 나타난 사건을 바르게 설명한 것으로',
-      '이 성경 구절을 묵상하며 고를 답으로'
-    ];
+    const catholicBibleMetadata = [
+      ['창세기', '구약', '오경'], ['탈출기', '구약', '오경'], ['레위기', '구약', '오경'], ['민수기', '구약', '오경'], ['신명기', '구약', '오경'],
+      ['여호수아기', '구약', '역사서'], ['판관기', '구약', '역사서'], ['룻기', '구약', '역사서'], ['사무엘기 상권', '구약', '역사서'], ['사무엘기 하권', '구약', '역사서'],
+      ['열왕기 상권', '구약', '역사서'], ['열왕기 하권', '구약', '역사서'], ['역대기 상권', '구약', '역사서'], ['역대기 하권', '구약', '역사서'], ['에즈라기', '구약', '역사서'],
+      ['느헤미야기', '구약', '역사서'], ['토빗기', '구약', '역사서'], ['유딧기', '구약', '역사서'], ['에스테르기', '구약', '역사서'], ['마카베오기 상권', '구약', '역사서'],
+      ['마카베오기 하권', '구약', '역사서'], ['욥기', '구약', '성문서'], ['시편', '구약', '성문서'], ['잠언', '구약', '성문서'], ['코헬렛', '구약', '성문서'],
+      ['아가', '구약', '성문서'], ['지혜서', '구약', '성문서'], ['집회서', '구약', '성문서'], ['이사야서', '구약', '예언서'], ['예레미야서', '구약', '예언서'],
+      ['애가', '구약', '예언서'], ['바룩서', '구약', '예언서'], ['에제키엘서', '구약', '예언서'], ['다니엘서', '구약', '예언서'], ['호세아서', '구약', '예언서'],
+      ['요엘서', '구약', '예언서'], ['아모스서', '구약', '예언서'], ['오바드야서', '구약', '예언서'], ['요나서', '구약', '예언서'], ['미카서', '구약', '예언서'],
+      ['나훔서', '구약', '예언서'], ['하바쿡서', '구약', '예언서'], ['스바니야서', '구약', '예언서'], ['하까이서', '구약', '예언서'], ['즈카르야서', '구약', '예언서'], ['말라키서', '구약', '예언서'],
+      ['마태오 복음서', '신약', '복음서'], ['마르코 복음서', '신약', '복음서'], ['루카 복음서', '신약', '복음서'], ['요한 복음서', '신약', '복음서'], ['사도행전', '신약', '역사서'],
+      ['로마서', '신약', '바오로 서간'], ['코린토 전서', '신약', '바오로 서간'], ['코린토 후서', '신약', '바오로 서간'], ['갈라티아서', '신약', '바오로 서간'], ['에페소서', '신약', '바오로 서간'],
+      ['필리피서', '신약', '바오로 서간'], ['콜로새서', '신약', '바오로 서간'], ['테살로니카 전서', '신약', '바오로 서간'], ['테살로니카 후서', '신약', '바오로 서간'], ['티모테오 전서', '신약', '바오로 서간'],
+      ['티모테오 후서', '신약', '바오로 서간'], ['티토서', '신약', '바오로 서간'], ['필레몬서', '신약', '바오로 서간'], ['히브리서', '신약', '공동 서간'], ['야고보서', '신약', '공동 서간'],
+      ['베드로 전서', '신약', '공동 서간'], ['베드로 후서', '신약', '공동 서간'], ['요한 1서', '신약', '공동 서간'], ['요한 2서', '신약', '공동 서간'], ['요한 3서', '신약', '공동 서간'],
+      ['유다서', '신약', '공동 서간'], ['요한 묵시록', '신약', '묵시 문학']
+    ].map(([book, testament, collection]) => ({ book, testament, collection }));
 
-    const questionForms = [
-      (lead, item) => `${lead} 가장 알맞은 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 옳은 설명은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경 기록과 일치하는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 올바르게 연결된 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 선택해야 할 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 가장 정확한 설명을 고르세요. ${item.question}`,
-      (lead, item) => `${lead} 본문에서 말하는 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 바르게 이해한 선택지는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 다음 보기 중 맞는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 기억해야 할 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 가장 적절한 답을 선택하세요. ${item.question}`,
-      (lead, item) => `${lead} 사실인 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문에 근거한 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 알맞게 설명한 보기는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 사건을 통해 알 수 있는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 다음 중 성경의 내용에 해당하는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 정답으로 알맞은 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문의 흐름과 맞는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 핵심 내용을 정확히 짚은 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 말씀 안에서 확인되는 사실은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 바른 성경 지식은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 장면에 대한 설명으로 맞는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문을 바르게 읽은 결과는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 네 가지 보기 중 성경적인 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 말씀을 기억하며 고를 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 사건의 결과를 바르게 말한 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 인물과 사건의 관계를 바르게 말한 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 하느님의 구원 역사와 맞닿은 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문을 바탕으로 선택할 수 있는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 독해한 내용 중 옳은 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경의 맥락에 맞는 설명은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 문항에서 요구하는 성경 사실은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 가장 분명하게 드러나는 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 하느님 말씀에 근거한 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문에서 배울 수 있는 사실은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 사건을 기억하는 올바른 방법은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경 본문을 요약한 답으로 맞는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 사건의 중심 내용을 고르면 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 말씀의 증언과 맞는 선택지는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 구절을 이해한 설명으로 알맞은 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경의 인물과 사건을 떠올릴 때 맞는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문을 왜곡하지 않은 설명은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 믿음의 관점에서 본문과 맞는 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 기록의 내용을 확인하는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 사건을 순서와 의미에 맞게 이해한 것은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문이 전하는 사실을 고르라면 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 올바른 성경 해석에 가까운 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 인물 또는 사건을 설명하는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경 지식으로 옳은 보기는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 오늘 복습할 본문 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 장절의 내용과 일치하는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 본문을 읽은 사람이라면 고를 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 가장 정확하게 답한 선택지는 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 성경의 메시지와 조화를 이루는 답은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 이 문항의 정답을 설명하는 내용은 무엇인가요? ${item.question}`,
-      (lead, item) => `${lead} 말씀의 사실 관계를 확인하면 무엇인가요? ${item.question}`
-    ];
-
-    function createQuestionBank(baseQuestions) {
-      return baseQuestions.flatMap((item, itemIndex) => questionForms.map((form, formIndex) => ({
-        id: `${item.reference}-${itemIndex}-${formIndex}`,
-        reference: item.reference,
-        question: form(questionLeads[formIndex % questionLeads.length], item),
-        options: [...item.options],
-        answer: item.answer,
-        explanation: item.explanation
-      }))).slice(0, 2000);
-    }
-
-    const questionBank = createQuestionBank(questions);
+    const questionBank = questions.map((item, index) => {
+      const metadata = catholicBibleMetadata.find(({ book }) => item.reference.startsWith(book)) || {
+        book: '성경 입문',
+        testament: '성경 전체',
+        collection: '주석 성경'
+      };
+      return {
+        ...item,
+        ...metadata,
+        id: `${item.reference}-${index}`,
+        sourceUrl: 'https://bible.cbck.or.kr/Knbnotes'
+      };
+    });
     const DAILY_QUIZ_SIZE = 5;
     let dailyQuestions = [];
     let current = 0;
@@ -351,6 +301,7 @@
       answered = false;
       questionCount.textContent = `Question ${String(current + 1).padStart(2, '0')}`;
       reference.textContent = item.reference;
+      $('book-meta').textContent = `${item.testament} · ${item.collection}`;
       question.textContent = item.question;
       explanation.innerHTML = '답을 선택하면 성경 장절과 간단한 해설이 표시됩니다.';
       next.disabled = true;
